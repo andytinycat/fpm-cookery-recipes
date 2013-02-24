@@ -21,5 +21,5 @@ To clean up after a build, do:
 List of packages
 ----------------
 
-*   munin-node
-    This is a recent build of the Munin node for Ubuntu.
+### munin-node ###
+A recent version of the Munin 2 node for Ubuntu (the shipped one is 1.4.x).
