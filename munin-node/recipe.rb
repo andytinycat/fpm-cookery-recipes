@@ -1,4 +1,4 @@
-class Munin-Node < FPM::Cookery::Recipe
+class MuninNode < FPM::Cookery::Recipe
   description 'Munin node package'
 
   name     'munin-node'
