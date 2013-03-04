@@ -7,32 +7,45 @@ class MuninNode < FPM::Cookery::Recipe
 
   section    'main'
   maintainer '<agency-devs@forward.co.uk>'
-  vendor     'agency-devs@forward.co.uk'
-  iteration  '1'
+  vendor     'f3d'
   license    'GNU GPL'
 
   homepage 'http://munin-monitoring.org'
 
   platforms [:debian, :ubuntu] do
-    post_install  'deb-post-install'
-    pre_uninstall 'deb-pre-uninstall'
+    post_install  'munin-node.postinst'
+    post_uninstall 'munin-node.postrm'
   end
 
   build_depends \
-    libnet-server-perl, libtime-hires-perl, libnet-snmp-perl,
-    libdigest-hmac-perl, libdigest-sha-perl, libcrypt-des-perl,
-    libnet-ssleay-perl, libhtml-template-perl
+    'libnet-server-perl', 'libtime-hires-perl', 'libnet-snmp-perl',
+    'libdigest-hmac-perl', 'libdigest-sha-perl', 'libcrypt-des-perl',
+    'libnet-ssleay-perl', 'libhtml-template-perl'
 
   depends \
-    libnet-server-perl, libtime-hires-perl, libnet-snmp-perl,
-    libdigest-hmac-perl, libdigest-sha-perl, libcrypt-des-perl,
-    libnet-ssleay-perl, libhtml-template-perl
+    'libnet-server-perl', 'libtime-hires-perl', 'libnet-snmp-perl',
+    'libdigest-hmac-perl', 'libdigest-sha-perl', 'libcrypt-des-perl',
+    'libnet-ssleay-perl', 'libhtml-template-perl'
 
   def build
-    system "DESTDIR=#{destdir} make"
+    # Copy in custom Makefile
+    safesystem "cp ../../Makefile.config #{builddir}/munin-#{version}/Makefile.config"
+    make
   end
 
   def install
-    system "make install-common-prime install-node-prime install-plugins-prime"
+    make 'install-common-prime', 'DESTDIR' => destdir 
+    make 'install-node-prime', :DESTDIR => destdir 
+    make 'install-plugins-prime', :DESTDIR => destdir 
+
+    # Init script
+    etc('init.d').install workdir('munin-node.init') => 'munin-node'
+
+    # Logrotate file
+    etc('logrotate.d').install workdir('munin-node.logrotate') => 'munin-node'
+
+    # Substitute version into files, cos Makefile doesn't do it on a node-only build
+    safesystem "find #{destdir} -type f -exec sed -i \"s|@@VERSION@@|#{version}|g\" {} \\;"
+
   end
 end
