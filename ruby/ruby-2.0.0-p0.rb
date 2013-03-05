@@ -24,7 +24,7 @@ class Ruby200 < FPM::Cookery::Recipe
   replaces "ruby"
 
   def build
-    configure :prefix => prefix, 'disable-install-doc' => true
+    configure :prefix => "/usr/local", 'disable-install-doc' => true
     make
   end
 
