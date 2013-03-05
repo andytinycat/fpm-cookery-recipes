@@ -15,10 +15,13 @@ class Ruby193 < FPM::Cookery::Recipe
   section 'interpreters'
 
   build_depends 'autoconf', 'libreadline6-dev', 'bison', 'zlib1g-dev',
-                'libssl-dev', 'libyaml-dev', 'libncurses5-dev'
+                'libssl-dev', 'libyaml-dev', 'libncurses5-dev', 'libffi-dev', 'libgdbm-dev'
 
   depends 'libffi6', 'libncurses5', 'libreadline6', 'libssl1.0.0', 'libtinfo5',
-          'libyaml-0-2', 'zlib1g'
+          'libyaml-0-2', 'zlib1g', 'libgdbm3'
+  
+  conflicts "ruby1.9"
+  replaces "ruby"
 
   def build
     configure :prefix => prefix, 'disable-install-doc' => true
