@@ -2,7 +2,7 @@ class Ruby193 < FPM::Cookery::Recipe
   description 'The Ruby virtual machine'
 
   name 'ruby'
-  version '1:1.9.3.392'
+  version '1.9.3.392'
   revision 0
   homepage 'http://www.ruby-lang.org/'
   source 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p392.tar.bz2'
